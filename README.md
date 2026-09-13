@@ -82,3 +82,45 @@ python -m PyInstaller --noconfirm --clean CodexTokenChecker.spec
 ## License
 
 ライセンスは未指定です。配布範囲を決める場合は、別途LICENSEファイルを追加してください。
+
+## Manus Usage Checker
+
+`manus_usage_checker.py`は、Manusから保存した利用履歴のCSVまたはJSONを読み込み、ローカルで集計するWindows GUIです。Manusへログインしたり、認証情報・履歴データを外部へ送信したりしません。
+
+### 起動方法
+
+```powershell
+python manus_usage_checker.py
+```
+
+画面の「履歴を開く」からCSVまたはJSONを選択してください。複数ファイルを同時に選択できます。
+
+### 対応する列名
+
+エクスポート形式の列名が多少異なっていても、次の代表的な列名を自動認識します。
+
+| 内容 | 認識する例 |
+|---|---|
+| 日時 | `timestamp`, `created_at`, `date`, `datetime` |
+| タスク | `task`, `task_name`, `name`, `title`, `prompt` |
+| 状態 | `status`, `state`, `result`, `outcome` |
+| 使用量 | `credits`, `usage`, `amount`, `cost`, `tokens`, `credits_used` |
+| 実行時間 | `duration_seconds`, `duration`, `elapsed_seconds` |
+
+JSONは配列形式、または`records`・`data`・`items`・`history`配下の配列形式に対応しています。実際のエクスポート列名が上記以外の場合は、対応する別名を追加できます。
+
+### 表示・出力
+
+- 利用件数、合計使用量、成功率、合計実行時間
+- 過去14日の日別使用量グラフ
+- タスク別集計
+- 履歴一覧
+- CSV / JSONへの分析結果出力
+
+Manus版EXEは次のコマンドでビルドできます。
+
+```powershell
+.\build_manus_v1.ps1
+```
+
+生成物は`dist\ManusUsageChecker.exe`です。GitHub Actionsの`Build Windows EXE`を実行すると、Codex版とManus版の両方が`Windows-tools` Artifactとして生成されます。
